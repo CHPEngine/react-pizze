@@ -16,6 +16,7 @@ function Home() {
         setIsLoading(false);
       });
   }, []);
+  window.scrollTo(0, 0);
 
   return (
     <>
@@ -24,6 +25,7 @@ function Home() {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
+
       <div className="content__items">
         {isLoading
           ? [...new Array(6)].map((_, index) => <Loader key={index} />)

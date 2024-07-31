@@ -1,15 +1,12 @@
 import { useState } from 'react';
 
-function Sort() {
+function Sort({isOrderByDesc, setIsOrderByDesc, selectedSortItem, onClickSortItem }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [sortSelectedIndex, setSortSelectedIndex] = useState(0);
-  const sortMenuItems = ['популярности', 'цене', 'алфавиту'];
-  const selectedSortLabel = sortMenuItems[sortSelectedIndex];
-
-  const onClickMenuItem = (menuIndex) => {
-    setSortSelectedIndex(menuIndex);
-    setIsOpen(!isOpen);
-  };
+  const sortItemList = [
+    { name: 'популярности', sortKey: 'rating' },
+    { name: 'цене', sortKey: 'price' },
+    { name: 'алфавиту', sortKey: 'title' },
+  ];
 
   return (
     <div className="sort">
@@ -20,6 +17,8 @@ function Sort() {
           viewBox="0 0 10 6"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          onClick={() => setIsOrderByDesc(!isOrderByDesc)}
+          className={isOrderByDesc ? 'sort__desc' : ''}
         >
           <path
             d="M10 5C10 5.16927 9.93815 5.31576 9.81445 5.43945C9.69075 5.56315 9.54427 5.625 9.375 5.625H0.625C0.455729 5.625 0.309245 5.56315 0.185547 5.43945C0.061849 5.31576 0 5.16927 0 5C0 4.83073 0.061849 4.68424 0.185547 4.56055L4.56055 0.185547C4.68424 0.061849 4.83073 0 5 0C5.16927 0 5.31576 0.061849 5.43945 0.185547L9.81445 4.56055C9.93815 4.68424 10 4.83073 10 5Z"
@@ -27,18 +26,22 @@ function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setIsOpen(!isOpen)}>{selectedSortLabel}</span>
+        <span onClick={() => setIsOpen(!isOpen)}>{selectedSortItem.name}</span>
       </div>
       {isOpen && (
         <div className="sort__popup">
           <ul>
-            {sortMenuItems.map((menuItem, menuIndex) => (
+            {sortItemList.map((sortItem, sortIndex) => (
               <li
-                key={menuIndex}
-                onClick={() => onClickMenuItem(menuIndex)}
-                className={menuIndex == sortSelectedIndex ? 'active' : ''}
+                key={sortIndex}
+                onClick={() => {
+                  onClickSortItem(sortItem);
+                  setIsOpen(!isOpen);
+                  setIsOrderByDesc(false);
+                }}
+                className={sortItem.sortKey == selectedSortItem.sortKey ? 'active' : ''}
               >
-                {menuItem}
+                {sortItem.name}
               </li>
             ))}
           </ul>

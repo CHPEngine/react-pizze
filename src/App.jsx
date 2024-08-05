@@ -1,21 +1,27 @@
 import './scss/app.scss';
 import Header from './components/Header';
 import Home from './pages/Home';
-import Cart from './pages/Cart'
-import NotFound from './pages/NotFound'
-import { Routes, Route} from 'react-router-dom'
+import Cart from './pages/Cart';
+import NotFound from './pages/NotFound';
+import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 
 function App() {
+  const [searchInput, setSearchInput] = useState('');
+
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchInput={searchInput} setSearchInput={setSearchInput} />
       <div className="content">
         <div className="container">
-        <Routes>
-          <Route path='/' element={<Home/>} />
-          <Route path='/cart' element={<Cart/>} />
-          <Route path='*' element={<NotFound/>} />
-        </Routes>
+          <Routes>
+            <Route
+              path="/"
+              element={<Home searchInput={searchInput} />}
+            />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
       </div>
     </div>

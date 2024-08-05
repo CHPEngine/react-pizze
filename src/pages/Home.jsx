@@ -3,11 +3,13 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Loader from '../components/PizzaBlock/Loader';
 import { useEffect, useState } from 'react';
+import Pagination from '../components/Pagination';
 
-function Home() {
+function Home({ searchInput }) {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isOrderByDesc, setIsOrderByDesc] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
   const [sortItem, setSortItem] = useState({
     name: 'популярности',
@@ -16,19 +18,35 @@ function Home() {
 
   const orderByQueryParam = `${isOrderByDesc ? '&order=desc' : ''}`;
   const categoryQueryParam = `${selectedCategoryIndex ? `&category=${selectedCategoryIndex}` : ''}`;
+  const searchQueryParam = `${searchInput ? `&search=${searchInput}` : ''}`;
+
+  const url =
+    'https://66a7aa6253c13f22a3d0a541.mockapi.io/pizzas' +
+    `?limit=4&page=${currentPage + 1}&sortBy=` +
+    sortItem.sortKey +
+    orderByQueryParam +
+    categoryQueryParam +
+    searchQueryParam;
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://66a7aa6253c13f22a3d0a541.mockapi.io/pizzas?sortBy=${sortItem.sortKey}${orderByQueryParam}${categoryQueryParam}`,
-    )
-      .then((res) => res.json())
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error();
+        }
+        return res.json();
+      })
       .then((items) => {
         setPizzas(items);
         setIsLoading(false);
+      })
+      .catch(() => {
+        setPizzas([]);
+        setIsLoading(false);
       });
-  }, [sortItem, isOrderByDesc, selectedCategoryIndex]);
-  window.scrollTo(0, 0);
+  }, [sortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
+//   window.scrollTo(0, 0);
 
   return (
     <>
@@ -51,6 +69,7 @@ function Home() {
           ? [...new Array(6)].map((_, index) => <Loader key={index} />)
           : pizzas.map((pizza, i) => <PizzaBlock key={i} {...pizza} />)}
       </div>
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </>
   );
 }

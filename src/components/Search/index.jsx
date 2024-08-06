@@ -1,7 +1,9 @@
 import style from './Search.module.scss';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { SearchContext } from '../../App';
 
-const Serach = ({ searchInput, setSearchInput }) => {
+const Serach = () => {
+  const { searchInput, setSearchInput } = useContext(SearchContext);
   const [isFilledInput, setIsFilledInput] = useState(false);
   return (
     <div className={style.root}>

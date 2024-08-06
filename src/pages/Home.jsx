@@ -2,10 +2,12 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Loader from '../components/PizzaBlock/Loader';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
+import { SearchContext } from '../App';
 
-function Home({ searchInput }) {
+function Home() {
+  const { searchInput } = useContext(SearchContext);
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isOrderByDesc, setIsOrderByDesc] = useState(false);
@@ -46,7 +48,6 @@ function Home({ searchInput }) {
         setIsLoading(false);
       });
   }, [sortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
-//   window.scrollTo(0, 0);
 
   return (
     <>

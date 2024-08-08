@@ -1,6 +1,11 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsOrderByDesc, setSelectedSortItem } from '../redux/slices/filterSlice';
 
-function Sort({isOrderByDesc, setIsOrderByDesc, selectedSortItem, onClickSortItem }) {
+function Sort() {
+  const { isOrderByDesc, selectedSortItem } = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const sortItemList = [
     { name: 'популярности', sortKey: 'rating' },
@@ -17,7 +22,7 @@ function Sort({isOrderByDesc, setIsOrderByDesc, selectedSortItem, onClickSortIte
           viewBox="0 0 10 6"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          onClick={() => setIsOrderByDesc(!isOrderByDesc)}
+          onClick={() => dispatch(setIsOrderByDesc(!isOrderByDesc))}
           className={isOrderByDesc ? 'sort__desc' : ''}
         >
           <path
@@ -35,9 +40,9 @@ function Sort({isOrderByDesc, setIsOrderByDesc, selectedSortItem, onClickSortIte
               <li
                 key={sortIndex}
                 onClick={() => {
-                  onClickSortItem(sortItem);
+                  dispatch(setSelectedSortItem(sortItem));
                   setIsOpen(!isOpen);
-                  setIsOrderByDesc(false);
+                  dispatch(setIsOrderByDesc(false));
                 }}
                 className={sortItem.sortKey == selectedSortItem.sortKey ? 'active' : ''}
               >

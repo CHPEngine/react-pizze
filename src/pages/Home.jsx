@@ -8,17 +8,14 @@ import { SearchContext } from '../App';
 import { useSelector } from 'react-redux';
 
 function Home() {
-  const selectedCategoryIndex = useSelector((state) => state.category.value);
+  const { selectedCategoryIndex, isOrderByDesc, selectedSortItem } = useSelector(
+    (state) => state.filter,
+  );
 
   const { searchInput } = useContext(SearchContext);
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isOrderByDesc, setIsOrderByDesc] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [sortItem, setSortItem] = useState({
-    name: 'популярности',
-    sortKey: 'rating',
-  });
 
   const orderByQueryParam = `${isOrderByDesc ? '&order=desc' : ''}`;
   const categoryQueryParam = `${selectedCategoryIndex ? `&category=${selectedCategoryIndex}` : ''}`;
@@ -27,7 +24,7 @@ function Home() {
   const url =
     'https://66a7aa6253c13f22a3d0a541.mockapi.io/pizzas' +
     `?limit=4&page=${currentPage + 1}&sortBy=` +
-    sortItem.sortKey +
+    selectedSortItem.sortKey +
     orderByQueryParam +
     categoryQueryParam +
     searchQueryParam;
@@ -49,18 +46,13 @@ function Home() {
         setPizzas([]);
         setIsLoading(false);
       });
-  }, [sortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
+  }, [selectedSortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
 
   return (
     <>
       <div className="content__top">
         <Categories />
-        <Sort
-          isOrderByDesc={isOrderByDesc}
-          setIsOrderByDesc={setIsOrderByDesc}
-          selectedSortItem={sortItem}
-          onClickSortItem={(item) => setSortItem(item)}
-        />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
 

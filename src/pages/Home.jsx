@@ -5,14 +5,16 @@ import Loader from '../components/PizzaBlock/Loader';
 import { useContext, useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
+import { useSelector } from 'react-redux';
 
 function Home() {
+  const selectedCategoryIndex = useSelector((state) => state.category.value);
+
   const { searchInput } = useContext(SearchContext);
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isOrderByDesc, setIsOrderByDesc] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
   const [sortItem, setSortItem] = useState({
     name: 'популярности',
     sortKey: 'rating',
@@ -52,10 +54,7 @@ function Home() {
   return (
     <>
       <div className="content__top">
-        <Categories
-          selectedCategoryIndex={selectedCategoryIndex}
-          setSelectedCategoryIndex={setSelectedCategoryIndex}
-        />
+        <Categories />
         <Sort
           isOrderByDesc={isOrderByDesc}
           setIsOrderByDesc={setIsOrderByDesc}

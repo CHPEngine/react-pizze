@@ -6,16 +6,16 @@ import { useContext, useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 function Home() {
-  const { selectedCategoryIndex, isOrderByDesc, selectedSortItem } = useSelector(
+  const { selectedCategoryIndex, isOrderByDesc, selectedSortItem, currentPage } = useSelector(
     (state) => state.filter,
   );
 
   const { searchInput } = useContext(SearchContext);
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
 
   const orderByQueryParam = `${isOrderByDesc ? '&order=desc' : ''}`;
   const categoryQueryParam = `${selectedCategoryIndex ? `&category=${selectedCategoryIndex}` : ''}`;
@@ -31,21 +31,11 @@ function Home() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error();
-        }
-        return res.json();
-      })
-      .then((items) => {
-        setPizzas(items);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setPizzas([]);
-        setIsLoading(false);
-      });
+    axios
+      .get(url)
+      .then((res) => setPizzas(res.data))
+      .catch(() => setPizzas([]))
+      .finally(() => setIsLoading(false));
   }, [selectedSortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
 
   return (
@@ -61,7 +51,7 @@ function Home() {
           ? [...new Array(6)].map((_, index) => <Loader key={index} />)
           : pizzas.map((pizza, i) => <PizzaBlock key={i} {...pizza} />)}
       </div>
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Pagination currentPage={currentPage} />
     </>
   );
 }

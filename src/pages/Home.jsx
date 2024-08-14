@@ -5,38 +5,32 @@ import Loader from '../components/PizzaBlock/Loader';
 import { useContext, useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPizzas } from '../redux/slices/pizzaSlice';
 
 function Home() {
   const { selectedCategoryIndex, isOrderByDesc, selectedSortItem, currentPage } = useSelector(
     (state) => state.filter,
   );
+  const { items, fetchStatus } = useSelector((state) => state.pizza);
+  const dispatch = useDispatch();
 
   const { searchInput } = useContext(SearchContext);
-  const [pizzas, setPizzas] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const orderByQueryParam = `${isOrderByDesc ? '&order=desc' : ''}`;
-  const categoryQueryParam = `${selectedCategoryIndex ? `&category=${selectedCategoryIndex}` : ''}`;
-  const searchQueryParam = `${searchInput ? `&search=${searchInput}` : ''}`;
-
-  const url =
-    'https://66a7aa6253c13f22a3d0a541.mockapi.io/pizzas' +
-    `?limit=4&page=${currentPage + 1}&sortBy=` +
-    selectedSortItem.sortKey +
-    orderByQueryParam +
-    categoryQueryParam +
-    searchQueryParam;
 
   useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(url)
-      .then((res) => setPizzas(res.data))
-      .catch(() => setPizzas([]))
-      .finally(() => setIsLoading(false));
+    dispatch(
+      fetchPizzas({
+        isOrderByDesc,
+        selectedCategoryIndex,
+        searchInput,
+        currentPage,
+        selectedSortItem,
+      }),
+    );
   }, [selectedSortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
+
+  const loadingBlock = [...new Array(6)].map((_, index) => <Loader key={index} />);
+  const pizzas = items.map((pizza, i) => <PizzaBlock key={i} {...pizza} />);
 
   return (
     <>
@@ -46,11 +40,12 @@ function Home() {
       </div>
       <h2 className="content__title">Все пиццы</h2>
 
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(6)].map((_, index) => <Loader key={index} />)
-          : pizzas.map((pizza, i) => <PizzaBlock key={i} {...pizza} />)}
-      </div>
+      {fetchStatus == 'failed' ? (
+        <h1>Выдачи нет 😕</h1>
+      ) : (
+        <div className="content__items">{fetchStatus === 'loading' ? loadingBlock : pizzas}</div>
+      )}
+
       <Pagination currentPage={currentPage} />
     </>
   );

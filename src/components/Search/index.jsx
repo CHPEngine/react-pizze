@@ -1,19 +1,17 @@
 import style from './Search.module.scss';
-import { useContext, useState, useRef, useCallback } from 'react';
-import { SearchContext } from '../../App';
-import { setCurrentPage } from '../../redux/slices/filterSlice';
+import { useState, useRef, useCallback } from 'react';
 import _debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
+import { setSearchInput } from '../../redux/slices/filterSlice';
 
 const Serach = () => {
   const [searchDisplayedValue, setSearchDisplayedValue] = useState('');
-  const { setSearchInput } = useContext(SearchContext);
   const [isFilledInput, setIsFilledInput] = useState(false);
   const dispatch = useDispatch();
   const inputRef = useRef();
 
   const searchCallback = useCallback(
-    _debounce((str) => setSearchInput(str), 550),
+    _debounce((str) => dispatch(setSearchInput(str)), 550),
     [],
   );
 
@@ -26,7 +24,7 @@ const Serach = () => {
   const onClickClearInput = () => {
     setIsFilledInput(false);
     setSearchDisplayedValue('');
-    setSearchInput('');
+    dispatch(setSearchInput(''));
     inputRef.current.focus();
   };
 

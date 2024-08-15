@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  searchInput: '',
   selectedCategoryIndex: 0,
   currentPage: 0,
   isOrderByDesc: false,
@@ -17,6 +18,9 @@ export const filterSlice = createSlice({
     selectCategory: (state, action) => {
       state.selectedCategoryIndex = action.payload;
     },
+    setSearchInput: (state, action) => {
+      state.searchInput = action.payload;
+    },
 
     setIsOrderByDesc(state, aciton) {
       state.isOrderByDesc = aciton.payload;
@@ -32,6 +36,14 @@ export const filterSlice = createSlice({
   },
 });
 
-export const { selectCategory, setIsOrderByDesc, setSelectedSortItem, setCurrentPage } = filterSlice.actions;
+export const selectFilter = (state) => state.filter;
+
+export const {
+  selectCategory,
+  setIsOrderByDesc,
+  setSelectedSortItem,
+  setCurrentPage,
+  setSearchInput,
+} = filterSlice.actions;
 
 export default filterSlice.reducer;

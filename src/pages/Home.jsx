@@ -2,20 +2,17 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Loader from '../components/PizzaBlock/Loader';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { fetchPizzas, selectPizzas } from '../redux/slices/pizzaSlice';
+import { selectFilter } from '../redux/slices/filterSlice';
 
 function Home() {
-  const { selectedCategoryIndex, isOrderByDesc, selectedSortItem, currentPage } = useSelector(
-    (state) => state.filter,
-  );
-  const { items, fetchStatus } = useSelector((state) => state.pizza);
+  const { selectedCategoryIndex, searchInput, isOrderByDesc, selectedSortItem, currentPage } =
+    useSelector(selectFilter);
+  const { items, fetchStatus } = useSelector(selectPizzas);
   const dispatch = useDispatch();
-
-  const { searchInput } = useContext(SearchContext);
 
   useEffect(() => {
     dispatch(

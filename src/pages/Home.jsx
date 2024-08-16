@@ -7,6 +7,7 @@ import Pagination from '../components/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPizzas, selectPizzas } from '../redux/slices/pizzaSlice';
 import { selectFilter } from '../redux/slices/filterSlice';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const { selectedCategoryIndex, searchInput, isOrderByDesc, selectedSortItem, currentPage } =
@@ -27,7 +28,11 @@ function Home() {
   }, [selectedSortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
 
   const loadingBlock = [...new Array(6)].map((_, index) => <Loader key={index} />);
-  const pizzas = items.map((pizza, i) => <PizzaBlock key={i} {...pizza} />);
+  const pizzas = items.map((pizza, i) => (
+    <Link key={i} to={`/pizza/${pizza.id}`}>
+      <PizzaBlock {...pizza} />
+    </Link>
+  ));
 
   return (
     <>

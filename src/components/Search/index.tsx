@@ -1,5 +1,5 @@
 import style from './Search.module.scss';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, ChangeEvent } from 'react';
 import _debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 import { setSearchInput } from '../../redux/slices/filterSlice';
@@ -15,7 +15,7 @@ const Serach: React.FC = () => {
     [],
   );
 
-  const onChangeInputValue = (e: any) => {
+  const onChangeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchDisplayedValue(e.target.value);
     setIsFilledInput(true);
     searchCallback(e.target.value);

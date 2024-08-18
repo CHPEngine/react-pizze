@@ -14,8 +14,8 @@ const Sort: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
 
-  const hadleClickOutside = (event: any) => {
-    if (!event.composedPath().includes(sortRef.current)) {
+  const hadleClickOutside = (event: MouseEvent) => {
+    if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
       setIsOpen(false);
     }
   };

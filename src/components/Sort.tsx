@@ -8,13 +8,13 @@ export const sortItemList = [
   { name: 'алфавиту', sortKey: 'title' },
 ];
 
-function Sort() {
+const Sort: React.FC = () => {
   const { isOrderByDesc, selectedSortItem } = useSelector(selectFilter);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  const hadleClickOutside = (event) => {
+  const hadleClickOutside = (event: any) => {
     if (!event.composedPath().includes(sortRef.current)) {
       setIsOpen(false);
     }

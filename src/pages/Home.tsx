@@ -17,6 +17,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         isOrderByDesc,
         selectedCategoryIndex,
@@ -28,7 +29,7 @@ function Home() {
   }, [selectedSortItem, isOrderByDesc, selectedCategoryIndex, searchInput, currentPage]);
 
   const loadingBlock = [...new Array(6)].map((_, index) => <Loader key={index} />);
-  const pizzas = items.map((pizza, i) => (
+  const pizzas = items.map((pizza: any, i: number) => (
     <Link key={i} to={`/pizza/${pizza.id}`}>
       <PizzaBlock {...pizza} />
     </Link>

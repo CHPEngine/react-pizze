@@ -4,18 +4,18 @@ import _debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 import { setSearchInput } from '../../redux/slices/filterSlice';
 
-const Serach = () => {
+const Serach: React.FC = () => {
   const [searchDisplayedValue, setSearchDisplayedValue] = useState('');
   const [isFilledInput, setIsFilledInput] = useState(false);
   const dispatch = useDispatch();
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const searchCallback = useCallback(
-    _debounce((str) => dispatch(setSearchInput(str)), 550),
+    _debounce((str: string) => dispatch(setSearchInput(str)), 550),
     [],
   );
 
-  const onChangeInputValue = (e) => {
+  const onChangeInputValue = (e: any) => {
     setSearchDisplayedValue(e.target.value);
     setIsFilledInput(true);
     searchCallback(e.target.value);
@@ -25,7 +25,7 @@ const Serach = () => {
     setIsFilledInput(false);
     setSearchDisplayedValue('');
     dispatch(setSearchInput(''));
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   return (

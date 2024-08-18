@@ -4,7 +4,7 @@ import CartItem from '../components/CartItem';
 import EmptyCart from '../components/EmptyCart';
 import { clearCart, selectCart } from '../redux/slices/cartSlice';
 
-function Cart() {
+const Cart: React.FC = () => {
   const { items, totalCount, totalPrice } = useSelector(selectCart);
   const dispatch = useDispatch();
   if (!items.length) {
@@ -93,7 +93,7 @@ function Cart() {
           </div>
         </div>
         <div className="content__items">
-          {items.map((cartItem, cartIndexId) => (
+          {items.map((cartItem: any, cartIndexId: number) => (
             <CartItem key={cartIndexId} {...cartItem} />
           ))}
         </div>
@@ -136,6 +136,6 @@ function Cart() {
       </div>
     </div>
   );
-}
+};
 
 export default Cart;

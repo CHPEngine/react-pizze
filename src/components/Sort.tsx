@@ -1,11 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectFilter, setIsOrderByDesc, setSelectedSortItem } from '../redux/slices/filterSlice';
+import {
+  selectFilter,
+  setIsOrderByDesc,
+  setSelectedSortItem,
+  SortKeys,
+  SortNames,
+} from '../redux/slices/filterSlice';
 
 export const sortItemList = [
-  { name: 'популярности', sortKey: 'rating' },
-  { name: 'цене', sortKey: 'price' },
-  { name: 'алфавиту', sortKey: 'title' },
+  { name: SortNames.POPULAR, sortKey: SortKeys.POPULAR },
+  { name: SortNames.PRICE, sortKey: SortKeys.PRICE },
+  { name: SortNames.ALPHABET, sortKey: SortKeys.ALPHABET },
 ];
 
 const Sort: React.FC = () => {
@@ -67,6 +73,6 @@ const Sort: React.FC = () => {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

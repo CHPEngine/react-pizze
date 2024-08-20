@@ -1,13 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
-const initialState = {
+export enum SortNames {
+  POPULAR = 'популярности',
+  ALPHABET = 'алфавиту',
+  PRICE = 'цене',
+}
+
+export enum SortKeys {
+  POPULAR = 'rating',
+  ALPHABET = 'title',
+  PRICE = 'price',
+}
+
+export interface ISortItem {
+  name: SortNames;
+  sortKey: SortKeys;
+}
+
+interface FilterSliceState {
+  searchInput: string;
+  selectedCategoryIndex: number;
+  currentPage: number;
+  isOrderByDesc: boolean;
+  selectedSortItem: ISortItem;
+}
+
+const initialState: FilterSliceState = {
   searchInput: '',
   selectedCategoryIndex: 0,
   currentPage: 0,
   isOrderByDesc: false,
   selectedSortItem: {
-    name: 'популярности',
-    sortKey: 'rating',
+    name: SortNames.POPULAR,
+    sortKey: SortKeys.POPULAR,
   },
 };
 
@@ -36,7 +62,7 @@ export const filterSlice = createSlice({
   },
 });
 
-export const selectFilter = (state) => state.filter;
+export const selectFilter = (state: RootState) => state.filter;
 
 export const {
   selectCategory,

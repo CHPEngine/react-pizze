@@ -1,12 +1,12 @@
-import { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState, useRef, memo } from 'react';
 import {
-  selectFilter,
   setIsOrderByDesc,
   setSelectedSortItem,
+  SortItem,
   SortKeys,
   SortNames,
 } from '../redux/slices/filterSlice';
+import { useAppDispatch } from '../redux/store';
 
 export const sortItemList = [
   { name: SortNames.POPULAR, sortKey: SortKeys.POPULAR },
@@ -14,11 +14,15 @@ export const sortItemList = [
   { name: SortNames.ALPHABET, sortKey: SortKeys.ALPHABET },
 ];
 
-const Sort: React.FC = () => {
-  const { isOrderByDesc, selectedSortItem } = useSelector(selectFilter);
-  const dispatch = useDispatch();
+interface SortProps {
+  isOrderByDesc: boolean;
+  selectedSortItem: SortItem;
+}
+
+const Sort: React.FC<SortProps> = memo(({ isOrderByDesc, selectedSortItem }) => {
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
   const hadleClickOutside = (event: MouseEvent) => {
     if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
@@ -73,6 +77,6 @@ const Sort: React.FC = () => {
       )}
     </div>
   );
-};
+});
 
 export default Sort;

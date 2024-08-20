@@ -13,7 +13,7 @@ export enum SortKeys {
   PRICE = 'price',
 }
 
-export interface ISortItem {
+export interface SortItem {
   name: SortNames;
   sortKey: SortKeys;
 }
@@ -23,7 +23,7 @@ interface FilterSliceState {
   selectedCategoryIndex: number;
   currentPage: number;
   isOrderByDesc: boolean;
-  selectedSortItem: ISortItem;
+  selectedSortItem: SortItem;
 }
 
 const initialState: FilterSliceState = {

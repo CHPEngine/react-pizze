@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { ISortItem } from './filterSlice';
+import { SortItem } from './filterSlice';
 
 type FetchPizzasParams = {
   isOrderByDesc: boolean;
   selectedCategoryIndex: number;
   searchInput: string;
   currentPage: number;
-  selectedSortItem: ISortItem;
+  selectedSortItem: SortItem;
 };
 
 export const fetchPizzas = createAsyncThunk<Pizza[], FetchPizzasParams>(

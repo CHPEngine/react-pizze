@@ -2,12 +2,11 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Loader from '../components/PizzaBlock/Loader';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import Pagination from '../components/Pagination';
 import { useSelector } from 'react-redux';
 import { fetchPizzas, selectPizzas } from '../redux/slices/pizzaSlice';
-import { selectFilter } from '../redux/slices/filterSlice';
-import { Link } from 'react-router-dom';
+import { selectCategory, selectFilter } from '../redux/slices/filterSlice';
 import { useAppDispatch } from '../redux/store';
 
 function Home() {
@@ -31,11 +30,18 @@ function Home() {
   const loadingBlock = [...new Array(6)].map((_, index) => <Loader key={index} />);
   const pizzas = items.map((pizza: any, i: number) => <PizzaBlock key={i} {...pizza} />);
 
+  const onClickCategory = useCallback((index: number) => {
+    dispatch(selectCategory(index));
+  }, []);
+
   return (
     <>
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories
+          selectedCategoryIndex={selectedCategoryIndex}
+          onClickCategory={onClickCategory}
+        />
+        <Sort isOrderByDesc={isOrderByDesc} selectedSortItem={selectedSortItem} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
 

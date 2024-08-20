@@ -1,12 +1,13 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { selectCategory, selectFilter } from '../redux/slices/filterSlice';
+import { memo } from 'react';
 
 const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
-const Categories: React.FC = () => {
-  const { selectedCategoryIndex } = useSelector(selectFilter);
-  const dispatch = useDispatch();
+interface CategoriesProps {
+  selectedCategoryIndex: number;
+  onClickCategory: (index: number) => void;
+}
 
+const Categories: React.FC<CategoriesProps> = memo(({ selectedCategoryIndex, onClickCategory }) => {
   return (
     <div className="categories">
       <ul>
@@ -14,7 +15,7 @@ const Categories: React.FC = () => {
           return (
             <li
               key={index}
-              onClick={() => dispatch(selectCategory(index))}
+              onClick={() => onClickCategory(index)}
               className={selectedCategoryIndex == index ? 'active' : ''}
             >
               {category}
@@ -24,6 +25,6 @@ const Categories: React.FC = () => {
       </ul>
     </div>
   );
-};
+});
 
 export default Categories;

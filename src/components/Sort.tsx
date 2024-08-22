@@ -1,11 +1,6 @@
 import { useEffect, useState, useRef, memo } from 'react';
-import {
-  setIsOrderByDesc,
-  setSelectedSortItem,
-  SortItem,
-  SortKeys,
-  SortNames,
-} from '../redux/slices/filterSlice';
+import { setIsOrderByDesc, setSelectedSortItem } from '../redux/slices/filter/slices';
+import { SortItem, SortKeys, SortNames } from '../redux/slices/filter/types';
 import { useAppDispatch } from '../redux/store';
 
 export const sortItemList = [

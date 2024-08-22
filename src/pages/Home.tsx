@@ -5,9 +5,11 @@ import Loader from '../components/PizzaBlock/Loader';
 import { useCallback, useEffect } from 'react';
 import Pagination from '../components/Pagination';
 import { useSelector } from 'react-redux';
-import { fetchPizzas, selectPizzas } from '../redux/slices/pizzaSlice';
-import { selectCategory, selectFilter } from '../redux/slices/filterSlice';
+import { fetchPizzas } from '../redux/slices/pizza/slices';
 import { useAppDispatch } from '../redux/store';
+import { selectFilter } from '../redux/slices/filter/selectors';
+import { selectPizzas } from '../redux/slices/pizza/selectors';
+import { selectCategory } from '../redux/slices/filter/slices';
 
 function Home() {
   const { selectedCategoryIndex, searchInput, isOrderByDesc, selectedSortItem, currentPage } =

@@ -1,12 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 import EmptyCart from '../components/EmptyCart';
-import { clearCart, selectCart } from '../redux/slices/cartSlice';
+import { selectCart } from '../redux/slices/cart/selectors';
+import { clearCart } from '../redux/slices/cart/slices';
+import { useAppDispatch } from '../redux/store';
 
 const Cart: React.FC = () => {
   const { items, totalCount, totalPrice } = useSelector(selectCart);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   if (!items.length) {
     return <EmptyCart />;
   }

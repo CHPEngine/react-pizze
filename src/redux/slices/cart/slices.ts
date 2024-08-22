@@ -1,31 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import calculatePizzaTotals from '../../../utils/calculatePizzaTotals';
+import getItemsFromLocalStorage from '../../../utils/getPizzasFromLocalStorage';
+import { CartSliceState } from './types';
 
-type CartItemState = {
-  id: string;
-  title: string;
-  price: number;
-  count: number;
-  type: string;
-  size: string;
-  imageUrl: string;
-};
 
-interface CartSliceState {
-  totalPrice: number;
-  totalCount: number;
-  items: CartItemState[];
-}
+
+const { totalCount, totalPrice, items } = getItemsFromLocalStorage();
 
 const initialState: CartSliceState = {
-  totalPrice: 0,
-  totalCount: 0,
-  items: [],
+  totalPrice,
+  totalCount,
+  items,
 };
 
 const calculateTotals = (state: CartSliceState) => {
-  state.totalPrice = state.items.reduce((sum, obj) => obj.price * obj.count + sum, 0);
-  state.totalCount = state.items.reduce((sum, obj) => (sum += obj.count), 0);
+  const { totalPrice, totalCount } = calculatePizzaTotals(state.items);
+
+  state.totalPrice = totalPrice;
+  state.totalCount = totalCount;
 };
 
 export const cartSlice = createSlice({
@@ -66,9 +58,7 @@ export const cartSlice = createSlice({
   },
 });
 
-export const selectCart = (state: RootState) => state.cart;
-export const selectCartItemById = (id: string) => (state: RootState) =>
-  state.cart.items.find((obj, _) => obj.id === id);
+
 
 export const { addCartItem, decrementCartItem, removeCartItem, clearCart } = cartSlice.actions;
 

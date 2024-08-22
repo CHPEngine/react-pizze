@@ -1,30 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-
-export enum SortNames {
-  POPULAR = 'популярности',
-  ALPHABET = 'алфавиту',
-  PRICE = 'цене',
-}
-
-export enum SortKeys {
-  POPULAR = 'rating',
-  ALPHABET = 'title',
-  PRICE = 'price',
-}
-
-export interface SortItem {
-  name: SortNames;
-  sortKey: SortKeys;
-}
-
-interface FilterSliceState {
-  searchInput: string;
-  selectedCategoryIndex: number;
-  currentPage: number;
-  isOrderByDesc: boolean;
-  selectedSortItem: SortItem;
-}
+import { FilterSliceState, SortKeys, SortNames } from './types';
 
 const initialState: FilterSliceState = {
   searchInput: '',
@@ -61,8 +36,6 @@ export const filterSlice = createSlice({
     },
   },
 });
-
-export const selectFilter = (state: RootState) => state.filter;
 
 export const {
   selectCategory,

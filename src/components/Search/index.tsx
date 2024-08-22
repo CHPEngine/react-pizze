@@ -2,7 +2,7 @@ import style from './Search.module.scss';
 import { useState, useRef, useCallback, ChangeEvent } from 'react';
 import _debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
-import { setSearchInput } from '../../redux/slices/filterSlice';
+import { setSearchInput } from '../../redux/slices/filter/slices';
 
 const Serach: React.FC = () => {
   const [searchDisplayedValue, setSearchDisplayedValue] = useState('');
